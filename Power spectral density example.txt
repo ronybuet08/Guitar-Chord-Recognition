@@ -1,0 +1,65 @@
+clear all
+close all
+
+cd 'C:\Users\Usuario\Desktop\Guitar-Chord-Recognition-my tests\jim2012Chords\Guitar_Only\g';
+path_a='C:\Users\Usuario\Desktop\Guitar-Chord-Recognition-my tests\jim2012Chords\Guitar_Only\g\';
+waveFiles=dir([path_a '*.wav']);
+%arr=[];
+%for k=1:length(waveFiles)
+waveFileName=sprintf('g1.wav',1);
+y=audioread(waveFileName);
+y=y/norm(y);
+y_fft=abs(fft(y));
+%y_fft=y_fft(1:400);
+%csv_filen=sprintf('g1.csv',k);
+%csvwrite(csv_filen,y_fft,0,0);
+%end
+windowsize = 1024;
+Pyy = power(abs(fft(y)),2)/windowsize;
+f = 44100/(79837+1)*(0:(windowsize-1));
+plot(f,Pyy(1:windowsize))
+title('Power spectral density')
+xlabel('Frequency (Hz)')
+
+
+
+IDEAL G CHORD:
+based on this
+https://www.mathworks.com/help/matlab/examples/fft-for-spectral-analysis.html
+
+
+t = 0:.001:.25;
+x = sin(2*pi*392*t) + sin(2*pi*246.94*t) + sin(2*pi*196*t)+ sin(2*pi*146.83*t)+ sin(2*pi*123.471*t)+ sin(2*pi*98*t);
+%y = x + 2*randn(size(t));
+plot(y(1:50))
+title('Noisy time domain signal')
+Y = fft(y,251);
+Pyy = Y.*conj(Y)/251;
+f = 1000/251*(0:127);
+plot(f,Pyy(1:128))
+title('Power spectral density')
+xlabel('Frequency (Hz)')
+
+
+***PCP for g1 wav file,
+PCP(0) -> PCP (c)
+
+clear all
+close all
+
+cd 'C:\Users\Usuario\Desktop\Guitar-Chord-Recognition-my tests\jim2012Chords\Guitar_Only\g';
+path_a='C:\Users\Usuario\Desktop\Guitar-Chord-Recognition-my tests\jim2012Chords\Guitar_Only\g\';
+waveFiles=dir([path_a '*.wav']);
+waveFileName=sprintf('g1.wav',1);
+y=audioread(waveFileName);
+y=y/norm(y);
+y_fft=abs(fft(y));
+audiofilesize=length(y);
+windowsize = 2048;
+Pyy = power(abs(fft(y)),2)/windowsize;
+f = 44100/(audiofilesize+1)*(0:(windowsize-1));
+plot(f,Pyy(1:windowsize))
+title('Power spectral density')
+xlabel('Frequency (Hz)')
+
+
